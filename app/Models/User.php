@@ -54,6 +54,18 @@ class User extends Authenticatable
         ];
     }
 
+    protected $appends = ['role_name', 'supervisor_name'];
+
+    public function getRoleNameAttribute(): string
+    {
+        return $this->role->name;
+    }
+
+    public function getSupervisorNameAttribute(): ?string
+    {
+        return $this->supervisor?->name;
+    }
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
