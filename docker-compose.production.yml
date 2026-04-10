@@ -1,0 +1,18 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: digimontir/app:latest
+    container_name: digimontir-app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    env_file:
+      - .env.production
+    networks:
+      - digimontir-network
+
+networks:
+  digimontir-network:
+    driver: bridge
