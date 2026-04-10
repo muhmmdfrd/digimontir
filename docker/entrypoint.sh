@@ -6,7 +6,10 @@ echo "🚀 Memulai deployment prosedur..."
 
 # Jalankan migrasi database
 echo "⏳ Menjalankan database migrations..."
-php artisan migrate --force
+php artisan migrate
+
+echo "⏳ Menjalankan database seeder..."
+php artisan db:seed
 
 # Cache konfigurasi untuk produksi
 echo "📦 Caching konfigurasi Laravel (config, routes, views, events)..."
