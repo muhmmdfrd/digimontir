@@ -1,13 +1,10 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: digimontir/app:latest
+    image: ghcr.io/muhmmdfrd/digimontir:1.0.0
     container_name: digimontir-app
     restart: unless-stopped
     ports:
-      - "8000:80"
+      - "4100:80"
     env_file:
       - .env.production
     networks:

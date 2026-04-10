@@ -1,5 +1,8 @@
 # Stage 1: Build dependensi PHP menggunakan Composer
-FROM composer:2.7 AS vendor
+FROM php:8.4-alpine AS vendor
+
+# Dapatkan composer resmi
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
@@ -7,13 +10,13 @@ WORKDIR /app
 COPY composer.json composer.lock* ./
 
 # Install dependensi (tanpa dev package, tanpa interaksi, optimasi autoloader, abaikan platform reqs sementara)
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-reqs
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts --ignore-platform-reqs
 
 # Copy keseluruhan kode aplikasi ke stage vendor
 COPY . .
 
-# Dump ulang autoloader
-RUN composer dump-autoload --optimize --no-dev
+# Dump ulang autoloader (tanpa scripts agar tidak clash dengan versi PHP build)
+RUN composer dump-autoload --optimize --no-dev --no-scripts
 
 # ======================================================================
 # Stage 2: Build asset frontend menggunakan Node.js
