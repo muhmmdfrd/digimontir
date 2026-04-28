@@ -8,12 +8,23 @@ use App\Models\Assignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Attributes as OA;
 
 class AssignmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    #[OA\Get(
+        path: "/assignments",
+        summary: "List all assignments with optional tracking parameters",
+        security: [["sanctum" => []]],
+        tags: ["Assignments"],
+        parameters: [
+            new OA\Parameter(name: "tab", in: "query", required: false, schema: new OA\Schema(type: "string", enum: ["past", "today", "upcoming"])),
+            new OA\Parameter(name: "status_id", in: "query", required: false, schema: new OA\Schema(type: "integer"))
+        ],
+        responses: [
+            new OA\Response(response: "200", description: "Array of Task objects")
+        ]
+    )]
     public function index(Request $request)
     {
         $user = $request->user();
@@ -62,9 +73,31 @@ class AssignmentController extends Controller
         return new AssignmentResource($assignment);
     }
 
-    /**
-     * Check-in action for technician.
-     */
+    #[OA\Post(
+        path: "/assignments/{id}/check-in",
+        summary: "Check In to an assignment location",
+        security: [["sanctum" => []]],
+        tags: ["Assignments"],
+        parameters: [
+            new OA\Parameter(name: "id", in: "path", required: true, schema: new OA\Schema(type: "integer"))
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: "multipart/form-data",
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: "lat_check_in", type: "number", format: "float"),
+                        new OA\Property(property: "lng_check_in", type: "number", format: "float"),
+                        new OA\Property(property: "check_in_photo", type: "string", format: "binary")
+                    ]
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(response: "200", description: "Check-in registered successfully")
+        ]
+    )]
     public function checkIn(Request $request, string $id)
     {
         $user = $request->user();
@@ -98,9 +131,32 @@ class AssignmentController extends Controller
         return new AssignmentResource($assignment);
     }
 
-    /**
-     * Check-out action for technician.
-     */
+    #[OA\Post(
+        path: "/assignments/{id}/check-out",
+        summary: "Check Out and finish the assignment",
+        security: [["sanctum" => []]],
+        tags: ["Assignments"],
+        parameters: [
+            new OA\Parameter(name: "id", in: "path", required: true, schema: new OA\Schema(type: "integer"))
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: "multipart/form-data",
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: "lat_check_out", type: "number", format: "float"),
+                        new OA\Property(property: "lng_check_out", type: "number", format: "float"),
+                        new OA\Property(property: "description_by_technician", type: "string"),
+                        new OA\Property(property: "check_out_photo", type: "string", format: "binary")
+                    ]
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(response: "200", description: "Check-out saved successfully")
+        ]
+    )]
     public function checkOut(Request $request, string $id)
     {
         $user = $request->user();
