@@ -31,17 +31,12 @@ class LoginController extends Controller
         $request->session()->regenerate();
 
         $user = Auth::user();
-        if (! $user->isAdmin()) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return back()->withErrors([
-                'email' => 'Only administrators can access the admin area.',
-            ])->onlyInput('email');
+        if ($user->isAdmin()) {
+            return redirect()->intended(route('admin.dashboard'));
+        } else {
+            // Assuming non-admins are technicians for now
+            return redirect()->intended(route('technician.dashboard'));
         }
-
-        return redirect()->intended(route('admin.dashboard'));
     }
 
     public function destroy(Request $request): RedirectResponse

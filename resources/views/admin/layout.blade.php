@@ -15,6 +15,7 @@
             </div>
             <nav class="flex-1 p-2 space-y-0.5">
                 <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white {{ request()->routeIs('admin.dashboard') ? 'bg-slate-700 text-white' : '' }}">Dashboard</a>
+                <a href="{{ route('admin.assignments.index') }}" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white {{ request()->routeIs('admin.assignments.*') ? 'bg-slate-700 text-white' : '' }}">Assignments</a>
                 <a href="{{ route('admin.customers.index') }}" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white {{ request()->routeIs('admin.customers.*') ? 'bg-slate-700 text-white' : '' }}">Customers</a>
                 <a href="{{ route('admin.roles.index') }}" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white {{ request()->routeIs('admin.roles.*') ? 'bg-slate-700 text-white' : '' }}">Roles</a>
                 <a href="{{ route('admin.statuses.index') }}" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white {{ request()->routeIs('admin.statuses.*') ? 'bg-slate-700 text-white' : '' }}">Statuses</a>

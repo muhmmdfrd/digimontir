@@ -25,4 +25,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('roles', RoleController::class);
     Route::resource('statuses', StatusController::class);
     Route::resource('users', UserController::class);
+    Route::resource('assignments', \App\Http\Controllers\Admin\AssignmentController::class);
+    Route::post('assignments/{assignment}/complete', [\App\Http\Controllers\Admin\AssignmentController::class, 'complete'])->name('assignments.complete');
+    Route::post('assignments/{assignment}/return', [\App\Http\Controllers\Admin\AssignmentController::class, 'returnTask'])->name('assignments.return');
+});
+
+Route::middleware(['auth'])->prefix('technician')->name('technician.')->group(function (): void {
+    Route::get('/', [\App\Http\Controllers\Technician\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/assignments/{id}', [\App\Http\Controllers\Technician\AssignmentController::class, 'show'])->name('assignments.show');
+    Route::post('/assignments/{id}/check-in', [\App\Http\Controllers\Technician\AssignmentController::class, 'checkIn'])->name('assignments.checkin');
+    Route::post('/assignments/{id}/check-out', [\App\Http\Controllers\Technician\AssignmentController::class, 'checkOut'])->name('assignments.checkout');
 });
