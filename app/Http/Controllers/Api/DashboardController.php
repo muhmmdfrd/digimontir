@@ -6,9 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class DashboardController extends Controller
 {
+    #[OA\Get(
+        path: "/dashboard/statistic",
+        summary: "Get aggregation metrics",
+        security: [["sanctum" => []]],
+        tags: ["Dashboard"],
+        responses: [
+            new OA\Response(response: "200", description: "Success data response")
+        ]
+    )]
     public function getStatistic(Request $request): JsonResponse
     {
         $user = $request->user();

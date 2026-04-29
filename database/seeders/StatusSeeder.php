@@ -16,6 +16,8 @@ class StatusSeeder extends Seeder
         DB::table('statuses')->insertOrIgnore([
             ['code' => 'ASGN', 'name' => 'Assigned'],
             ['code' => 'CKIN', 'name' => 'Checked-In'],  
+            ['code' => 'WREV', 'name' => 'Waiting Review'],  
+            ['code' => 'RTRN', 'name' => 'Returned'],
             ['code' => 'CMPT', 'name' => 'Completed'],   
             ['code' => 'CLSD', 'name' => 'Closed'],      
         ]);
